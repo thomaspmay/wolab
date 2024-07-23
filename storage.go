@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func saveDeviceInfo(filename string, d device) error {
+func saveDevices(devices deviceList) error {
 	file, err := os.Create(filename)
 	if err != nil {
 		return err
@@ -13,17 +13,20 @@ func saveDeviceInfo(filename string, d device) error {
 	defer file.Close()
 
 	encoder := toml.NewEncoder(file)
-	if err := encoder.Encode(d); err != nil {
+	if err := encoder.Encode(devices); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func loadDeviceInfo(filename string) (device, error) {
-	var d device
-	if _, err := toml.DecodeFile(filename, &d); err != nil {
-		return d, err
+func loadDevices() (deviceList, error) {
+	var devices deviceList
+	if _, err := toml.DecodeFile(filename, &devices); err != nil {
+		if os.IsNotExist(err) {
+			return devices, nil
+		}
+		return devices, err
 	}
-	return d, nil
+	return devices, nil
 }

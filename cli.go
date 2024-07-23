@@ -1,24 +1,8 @@
 package main
 
-import (
-	"github.com/spf13/cobra"
-)
+import "github.com/spf13/cobra"
 
-type device struct {
-	UUID     string
-	Name     string
-	Hostname string
-	MAC      string
-	IP       string
-}
-
-type deviceList struct {
-	Devices []device
-}
-
-const filename = "devices.toml"
-
-func main() {
+func runCli() {
 	var rootCmd = &cobra.Command{Use: "device_manager"}
 
 	var createCmd = &cobra.Command{
